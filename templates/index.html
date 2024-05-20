@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список городов</title>
+</head>
+<body>
+    <h1>Список городов</h1>
+    <table border="1">
+        <tr>
+            <th>Название города</th>
+            <th>Погода</th>
+        </tr>
+        {% for city in city_list %}
+        <tr>
+            <td><a href="/calculate?city={{ city.location.name }}">{{ city.location.name }}</a></td>
+            <td><img src={{ city.current.condition.icon }} alt={{ city.current.condition.text }}></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button id="updateButton">Обновить список городов</button>
+
+    <script>
+        document.getElementById("updateButton").addEventListener("click", function() {
+            // Выполните здесь запрос на сервер для обновления списка городов
+            // Например, можно использовать fetch для отправки запроса на сервер
+            // и получения обновленных данных о городах
+            fetch('/update_city_list')
+                .then(response => response.json())
+                .then(data => {
+                    // После получения данных можно обновить содержимое страницы, если это необходимо
+                    // Например, можно перезагрузить страницу или обновить только таблицу с городами
+                    // В данном примере просто обновим страницу
+                    location.reload();
+                })
+                .catch(error => console.error('Ошибка:', error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+    "location": {
+        "name": "Krasnozavodsk",
+        "region": "Moskva",
+        "country": "Russia",
+        "lat": 56.45,
+        "lon": 38.22,
+        "tz_id": "Europe/Moscow",
+        "localtime_epoch": 1716132430,
+        "localtime": "2024-05-19 18:27"
+    },
+    "current": {
+        "last_updated_epoch": 1716131700,
+        "last_updated": "2024-05-19 18:15",
+        "temp_c": 20.0,
+        "temp_f": 68.0,
+        "is_day": 1,
+        "condition": {
+            "text": "Sunny",
+            "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+            "code": 1000
+        },
+        "wind_mph": 6.9,
+        "wind_kph": 11.2,
+        "wind_degree": 170,
+        "wind_dir": "S",
+        "pressure_mb": 1017.0,
+        "pressure_in": 30.03,
+        "precip_mm": 0.0,
+        "precip_in": 0.0,
+        "humidity": 32,
+        "cloud": 0,
+        "feelslike_c": 20.0,
+        "feelslike_f": 68.0,
+        "vis_km": 10.0,
+        "vis_miles": 6.0,
+        "uv": 5.0,
+        "gust_mph": 9.4,
+        "gust_kph": 15.0
+    }
+}

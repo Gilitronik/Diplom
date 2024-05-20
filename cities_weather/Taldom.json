@@ -1,0 +1,41 @@
+{
+    "location": {
+        "name": "Taldom",
+        "region": "Moskva",
+        "country": "Russia",
+        "lat": 56.73,
+        "lon": 37.53,
+        "tz_id": "Europe/Moscow",
+        "localtime_epoch": 1716132430,
+        "localtime": "2024-05-19 18:27"
+    },
+    "current": {
+        "last_updated_epoch": 1716131700,
+        "last_updated": "2024-05-19 18:15",
+        "temp_c": 18.5,
+        "temp_f": 65.3,
+        "is_day": 1,
+        "condition": {
+            "text": "Sunny",
+            "icon": "//cdn.weatherapi.com/weather/64x64/day/113.png",
+            "code": 1000
+        },
+        "wind_mph": 5.8,
+        "wind_kph": 9.4,
+        "wind_degree": 173,
+        "wind_dir": "S",
+        "pressure_mb": 1018.0,
+        "pressure_in": 30.05,
+        "precip_mm": 0.0,
+        "precip_in": 0.0,
+        "humidity": 50,
+        "cloud": 17,
+        "feelslike_c": 18.5,
+        "feelslike_f": 65.3,
+        "vis_km": 10.0,
+        "vis_miles": 6.0,
+        "uv": 5.0,
+        "gust_mph": 8.1,
+        "gust_kph": 13.0
+    }
+}
