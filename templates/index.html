@@ -1,42 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список городов</title>
+    <link rel="icon" href="/favicon/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Список городов</h1>
-    <table border="1">
-        <tr>
-            <th>Название города</th>
-            <th>Погода</th>
-        </tr>
-        {% for city in city_list %}
-        <tr>
-            <td><a href="/calculate?city={{ city.location.name }}">{{ city.location.name }}</a></td>
-            <td><img src={{ city.current.condition.icon }} alt={{ city.current.condition.text }}></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <button id="updateButton">Обновить список городов</button>
+    <div class="page">
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link px-2">
+                            <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Weather Logo">
+                                <title>Weather Logo</title>
+                                <!-- Sun -->
+                                <circle cx="32" cy="32" r="12" fill="#FFD700"/>
+                                <line x1="32" y1="4" x2="32" y2="16" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="32" y1="48" x2="32" y2="60" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="4" y1="32" x2="16" y2="32" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="48" y1="32" x2="60" y2="32" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="10.93" y1="10.93" x2="19.8" y2="19.8" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="44.2" y1="44.2" x2="53.07" y2="53.07" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="10.93" y1="53.07" x2="19.8" y2="44.2" stroke="#FFD700" stroke-width="4"/>
+                                <line x1="44.2" y1="19.8" x2="53.07" y2="10.93" stroke="#FFD700" stroke-width="4"/>
+                                <!-- Cloud -->
+                                <ellipse cx="40" cy="45" rx="20" ry="12" fill="#B0C4DE"/>
+                                <!-- Raindrops -->
+                                <path d="M35 45 Q34 50 32 55 Q30 50 29 45 Z" fill="#1E90FF"/>
+                                <path d="M45 45 Q44 50 42 55 Q40 50 39 45 Z" fill="#1E90FF"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li><a href="/" class="nav-link px-2 text-secondary">Домой</a></li>
+                    <li><a href="/cities_list" class="nav-link px-2 text-white">Города</a></li>
+                    <li><a href="/forum" class="nav-link px-2 text-white">Форум</a></li>
+                    <li><a href="/about" class="nav-link px-2 text-white">О нас</a></li>
+                </ul>
+        
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="/cities_list" method="GET">
+                    <input type="search" class="form-control form-control-dark text-bg-dark" name="query" placeholder="Search..." aria-label="Search">
+                </form>
+        
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    <button type="button" class="btn btn-warning">Sign-up</button>
+                </div>
+                </div>
+            </div>
+        </header>
 
-    <script>
-        document.getElementById("updateButton").addEventListener("click", function() {
-            // Выполните здесь запрос на сервер для обновления списка городов
-            // Например, можно использовать fetch для отправки запроса на сервер
-            // и получения обновленных данных о городах
-            fetch('/update_city_list')
-                .then(response => response.json())
-                .then(data => {
-                    // После получения данных можно обновить содержимое страницы, если это необходимо
-                    // Например, можно перезагрузить страницу или обновить только таблицу с городами
-                    // В данном примере просто обновим страницу
-                    location.reload();
-                })
-                .catch(error => console.error('Ошибка:', error));
-        });
-    </script>
+        <section class="welcome-section">
+            <div class="container">
+                <h1>Добро пожаловать на наш сайт прогнозов для владельцев солнечных панелей!</h1>
+                <p>Наш сервис помогает вам максимально эффективно использовать вашу солнечную энергию. Получите точные прогнозы и расчеты энергии, которую вы сможете сгенерировать.</p>
+                <p>С помощью нашего сервиса вы сможете:</p>
+                <div class="justified-list">
+                    <p><i class="fas fa-sun"></i> Узнавать прогноз солнечной активности на ближайшие дни</p>
+                    <p><i class="fas fa-calculator"></i> Рассчитывать ожидаемую выработку энергии</p>
+                    <p><i class="fas fa-chart-line"></i> Анализировать эффективность ваших солнечных панелей</p>
+                    <p><i class="fas fa-bell"></i> Получать уведомления о благоприятных условиях для генерации энергии</p>
+                </div>
+                <p>Присоединяйтесь к нам и начните использовать солнечную энергию на максимум!</p>
+                <a href="#register" class="btn btn-primary">Регистрация</a>
+                <a href="#login" class="btn btn-outline-light">Вход</a>
+            </div>
+        </section>
+</div>
 </body>
 </html>

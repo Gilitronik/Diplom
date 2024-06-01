@@ -1,4 +1,161 @@
-body {
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.policy {
+    background-color: #f2f2f2; /* серый цвет */
+}
+
+.welcome-section {
+    padding: 100px 0;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+    text-align: justify;
+}
+
+.welcome-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.welcome-section p {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.justified-list {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.justified-list p {
+    margin-bottom: 10px;
+}
+
+.welcome-section .btn {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.welcome-section .fas {
+    margin-right: 10px;
+}
+
+.weather-card {
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    /* padding-bottom: 1rem; */
+    color: var(--bs-secondary);
+    text-decoration: none;
+    /* border-bottom: 1px solid #e5e5e5; */
+}
+
+.weather-card:hover {
+    background-color: #f8f9fa;
+    text-decoration: none;
+}
+
+.ad-block {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* расстояние между колонками */
+}
+
+.column {
+    flex: 1; /* все колонки будут равной ширины */
+    min-width: 200px; /* минимальная ширина колонок */
+    box-sizing: border-box;
+}
+
+.Logo img {
+    max-width: 100%; /* изображение будет занимать всю ширину родителя */
+    height: auto; /* высота будет авто, чтобы сохранить пропорции */
+}
+
+.title {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.copy {
+    margin-top: 20px;
+}
+
+.policy {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.text-wrapper {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    min-width: 300px;
+}
+
+.text-wrapper p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.social a {
+    margin-right: 10px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+}
+
+a {
+    color: inherit; /* Наследует цвет родительского элемента */
+    text-decoration: none; /* Убирает подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Добавляет подчеркивание при наведении */
+}
+
+/* Дополнительно можно определить конкретный цвет */
+a {
+    color: black; /* Цвет ссылок */
+}
+
+a:hover {
+    color: gray; /* Цвет ссылок при наведении */
+}
+
+
+.soc.vk { background-image: url('path/to/vk-icon.png'); }
+.soc.ok { background-image: url('path/to/ok-icon.png'); }
+.soc.yt { background-image: url('path/to/yt-icon.png'); }
+.soc.tw { background-image: url('path/to/tw-icon.png'); }
+.soc.tg { background-image: url('path/to/tg-icon.png'); }
+
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f8f8f8;
     display: flex;
@@ -51,3 +208,21 @@ button:hover {
 h2 {
     margin-top: 20px;
 }
+
+
+#suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    z-index: 1000;
+}
+#suggestions li {
+    padding: 5px;
+    cursor: pointer;
+}
+#suggestions li:hover {
+    background-color: #eee;
+} */

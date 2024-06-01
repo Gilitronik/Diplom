@@ -1,47 +1,102 @@
+from handlers import read_weather_data
+import json
 import math
 
-def calculate_solar_output(area, efficiency, solar_radiation, temperature, temp_coefficient, loss_factor):
-    """
-    Рассчитывает выход солнечных панелей.
+import time
+from datetime import datetime
+
+def calculate_solar_output(data, panel_area, panel_efficiency, azimuth_angle, tilt_angle, is_tracking):
     
-    Параметры:
-    area (float): Площадь панели в м².
-    efficiency (float): Эффективность панели (в долях единицы, например, 0.18 для 18%).
-    solar_radiation (float): Солнечная радиация в кВт·ч/м².
-    temperature (float): Температура окружающей среды в °C.
-    temp_coefficient (float): Температурный коэффициент (например, -0.005 для -0.5% на каждый градус выше 25°C).
-    loss_factor (float): Общий коэффициент потерь (например, 0.9 для 10% потерь).
+    temp_coeff = -0.005  # Коэффициент температуры панели (примерное значение)
+    reference_temp = 25  # °C, температурная точка отсчета
     
-    Возвращает:
-    float: Производимая энергия в кВт·ч.
-    """
+    try:
+        uv_index = float(data['current']['uv'])  # УФ индекс
+        temp = float(data['current']['temp_c']) # Температура окружающей среды
+        cloud = float(data['current']['cloud'])
+        lat = float(data['location']['lat'])  # Широта в радианах
+        lon = float(data['location']['lon']) # Долгота в радианах
+    except:
+        return None
     
-    # Температурная корректировка эффективности
-    adjusted_efficiency = efficiency * (1 + temp_coefficient * (temperature - 25))
+    # if not all([data, panel_area, panel_efficiency]):
+    #     return None
+
+    # if panel_area <= 0 or panel_efficiency <= 0:
+    #     return None
+
+    # if azimuth_angle < 0 or azimuth_angle > 360:
+    #     return None
+
+    # if tilt_angle < 0 or tilt_angle > 90:
+    #     return None
     
-    # Производимая энергия до учета потерь
-    energy_before_losses = area * solar_radiation * adjusted_efficiency
+    # print("проверки пройдены")
+
+    # Коррекция мощности на основе температуры панели
+    temperature_factor = 1 + temp_coeff * (temp - reference_temp)
     
-    # Окончательная производимая энергия с учетом потерь
-    final_energy = energy_before_losses * loss_factor
+    # Вычисление времени года на основе localtime_epoch
+    localtime_epoch = int(time.mktime(datetime.strptime(data['current']['last_updated'], "%Y-%m-%d %H:%M").timetuple()))
+    year_progress = (localtime_epoch % 31536000) / 31536000  # Прогресс года в диапазоне [0, 1]
+    # Положительное значение tilt_angle для летнего солнцестояния, отрицательное для зимнего
+    tilt_angle = 23.5 * math.cos(2 * math.pi * year_progress)
     
-    return final_energy
+    declination = 23.45 * math.sin(2 * math.pi * (284 + year_progress * 360) / 365)  # Деклинация солнца
+    hour_angle = math.radians((localtime_epoch % 86400) / 240 - 180)  # Угол часового пояса
+    altitude = math.asin(math.sin(lat) * math.sin(math.radians(declination)) +
+                         math.cos(lat) * math.cos(math.radians(declination)) * math.cos(hour_angle))  # Высота солнца
+
+    
+    # Проверка типов данных и диапазона значений
+    try:
+        panel_area = float(panel_area)
+        panel_efficiency = float(panel_efficiency)
+        if azimuth_angle:
+            azimuth_angle = float(azimuth_angle)
+        if tilt_angle:
+            tilt_angle = float(tilt_angle)
+    except ValueError:
+        return None
+    
+    if is_tracking:
+        tilt_angle = math.degrees(altitude)  # Следящая панель всегда ориентирована на солнце
+        azimuth_angle = math.degrees(math.atan2(-math.sin(hour_angle), math.tan(math.radians(declination)) * math.cos(lat) -
+                                math.sin(lat) * math.cos(hour_angle)))  # Азимут солнца
+    else:
+        # azimuth_angle = 180  # Панель всегда ориентирована на юг
+        # tilt_angle = 23.5 * math.cos(2 * math.pi * year_progress)  # Примерное упрощение для фиксированной панели
+        try:
+            azimuth_angle = float(azimuth_angle)
+            tilt_angle = float(tilt_angle)
+        except:
+            return None
 
 
-def calculate_output(area, efficiency, solar_irradiance, temperature, tilt_angle, orientation):
-    efficiency /= 100  # Эффективность преобразуем в доли единицы
+    # Учет углов наклона и азимута
+    cos_theta = (math.sin(altitude) * math.sin(math.radians(tilt_angle)) * 
+                math.cos(math.radians(azimuth_angle) - math.radians(180)) + 
+                math.cos(altitude) * math.cos(math.radians(tilt_angle)))
+    
+    # Коррекция мощности на основе УФ индекса
+    uv_power_correction = uv_index / 10  # Примерный коэффициент коррекции
 
-    # Коррекция эффективности в зависимости от температуры
-    temperature_coefficient = -0.005  # Допустимая поправка на температуру
-    nominal_temperature = 25  # Номинальная температура в градусах Цельсия
-    efficiency *= 1 + temperature_coefficient * (temperature - nominal_temperature)
+    # Вычисление выходной мощности
+    power_output = uv_power_correction * panel_area * panel_efficiency * temperature_factor * max(0, cos_theta) * (1 - cloud/100)
 
-    # Коррекция на угол наклона и ориентацию
-    optimal_tilt_angle = 30  # Допустим оптимальный угол наклона
-    optimal_orientation = 180  # Оптимальная ориентация на юг
-    tilt_loss = math.cos(math.radians(tilt_angle - optimal_tilt_angle))
-    orientation_loss = math.cos(math.radians(orientation - optimal_orientation))
+    return power_output
 
-    total_loss = tilt_loss * orientation_loss
 
-    return area * efficiency * solar_irradiance * total_loss
+def calculate_simple_output(data):
+    temp_coeff = -0.005
+    reference_temp = 25  
+
+    cloud = float(data['cloud'])
+    temp = float(data['temp_c'])
+    uv_index = float(data['uv'])
+
+    temperature_factor = 1 + temp_coeff * (temp - reference_temp)
+
+    power_output = uv_index * temperature_factor * (1 - cloud/100)
+
+    return power_output
