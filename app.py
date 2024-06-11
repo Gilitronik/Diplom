@@ -8,8 +8,7 @@ from calculations import calculate_solar_output, calculate_simple_output
 
 app = Flask(__name__)
 
-# {'location': {'name': 'Vereya', 'region': 'Moskva', 'country': 'Russia', 'lat': 55.77, 'lon': 39.1, 'tz_id': 'Europe/Moscow', 'localtime_epoch': 1715025588, 'localtime': '2024-05-06 22:59'}, 'current': {'last_updated_epoch': 1715024700, 'last_updated': '2024-05-06 22:45', 'temp_c': 2.2, 'temp_f': 35.9, 'is_day': 0, 'condition': {'text': 'Partly Cloudy', 'icon': '//cdn.weatherapi.com/weather/64x64/night/116.png', 'code': 1003}, 'wind_mph': 6.9, 'wind_kph': 11.2, 'wind_degree': 68, 'wind_dir': 'ENE', 'pressure_mb': 1010.0, 'pressure_in': 29.83, 'precip_mm': 0.0, 'precip_in': 0.0, 'humidity': 69, 'cloud': 48, 'feelslike_c': -1.0, 'feelslike_f': 30.2, 'vis_km': 10.0, 'vis_miles': 6.0, 'uv': 1.0, 'gust_mph': 13.6, 'gust_kph': 22.0}}
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     city_list_json = []
     for city_name in city_list:
@@ -19,7 +18,7 @@ def index():
 
     return render_template('index.html', city_list=city_list_json)
 
-
+if L <= X <= R:
 @app.route('/cities_list', methods=['GET', 'POST'])
 def cities_list():
     query = request.args.get('query', '')
@@ -53,7 +52,7 @@ def update_city():
     city_name = data.get('city_name')
     process_cities(city_name)
     city = read_weather_data(city_name)
-    return jsonify(response=city), 200
+    return jsonify(city), 200
 
 
 @app.route('/cities_list/calculate/create_chart', methods=['GET', 'POST'])
